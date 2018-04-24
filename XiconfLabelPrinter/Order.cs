@@ -69,7 +69,16 @@ namespace MSYS.Xiconf.LabelPrinter
                 return null;
             }
 
-            var programName = "PROGRAM " + programNameMatches.Groups[1].Value;
+            var programName = "PROGRAM " + programNameMatches.Groups[1].Value.Trim();
+
+            if (programName.Contains("\""))
+            {
+                programName = programName.Substring(0, programName.IndexOf('"'));
+            }
+            else if (programName.Contains("'"))
+            {
+                programName = programName.Substring(0, programName.IndexOf('\''));
+            }
 
             var quantity = 0;
 
