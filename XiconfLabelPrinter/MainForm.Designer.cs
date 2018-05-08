@@ -39,6 +39,9 @@
             this.licenseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configGroupBox = new System.Windows.Forms.GroupBox();
+            this.resistPrinterComboBox = new System.Windows.Forms.ComboBox();
+            this.resistFormatLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.resistFormatCheckBox = new System.Windows.Forms.CheckBox();
             this.editWorkCenterXlsxButton = new System.Windows.Forms.Button();
             this.reloadWorkCenterXlsxButton = new System.Windows.Forms.Button();
             this.editOrderXlsxButton = new System.Windows.Forms.Button();
@@ -55,7 +58,6 @@
             this.orderFormatLinkLabel = new System.Windows.Forms.LinkLabel();
             this.orderFormatCheckBox = new System.Windows.Forms.CheckBox();
             this.printButton = new System.Windows.Forms.Button();
-            this.orderNoTextBox = new System.Windows.Forms.TextBox();
             this.licenseErrorLabel = new System.Windows.Forms.Label();
             this.openFormatFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.openXlsxFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -87,6 +89,18 @@
             this.reprintServiceTagNoValue = new System.Windows.Forms.MaskedTextBox();
             this.reprintServiceTagCountValue = new System.Windows.Forms.NumericUpDown();
             this.reprintServiceTagCountLabel = new System.Windows.Forms.Label();
+            this.reprintResistTabPage = new System.Windows.Forms.TabPage();
+            this.reprintResistNoLabel = new System.Windows.Forms.Label();
+            this.reprintResistNoValue = new System.Windows.Forms.MaskedTextBox();
+            this.reprintResistTextValue = new System.Windows.Forms.TextBox();
+            this.reprintResistTextLabel = new System.Windows.Forms.Label();
+            this.reprintResistButton = new System.Windows.Forms.Button();
+            this.reprintResistCountValue = new System.Windows.Forms.NumericUpDown();
+            this.reprintResistCountLabel = new System.Windows.Forms.Label();
+            this.orderNoTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.orderNoLabel = new System.Windows.Forms.Label();
+            this.orderExtraValue = new System.Windows.Forms.NumericUpDown();
+            this.orderExtraLabel = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.configGroupBox.SuspendLayout();
             this.printTabControl.SuspendLayout();
@@ -99,11 +113,14 @@
             this.reprintServiceTagTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reprintServiceTagStartNoValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reprintServiceTagCountValue)).BeginInit();
+            this.reprintResistTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.reprintResistCountValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderExtraValue)).BeginInit();
             this.SuspendLayout();
             // 
             // orderXlsxLabel
             // 
-            this.orderXlsxLabel.Location = new System.Drawing.Point(24, 101);
+            this.orderXlsxLabel.Location = new System.Drawing.Point(24, 129);
             this.orderXlsxLabel.Margin = new System.Windows.Forms.Padding(3);
             this.orderXlsxLabel.Name = "orderXlsxLabel";
             this.orderXlsxLabel.Size = new System.Drawing.Size(144, 20);
@@ -113,7 +130,7 @@
             // 
             // workCenterXlsxLabel
             // 
-            this.workCenterXlsxLabel.Location = new System.Drawing.Point(24, 127);
+            this.workCenterXlsxLabel.Location = new System.Drawing.Point(24, 155);
             this.workCenterXlsxLabel.Margin = new System.Windows.Forms.Padding(3);
             this.workCenterXlsxLabel.Name = "workCenterXlsxLabel";
             this.workCenterXlsxLabel.Size = new System.Drawing.Size(144, 20);
@@ -182,6 +199,9 @@
             // 
             // configGroupBox
             // 
+            this.configGroupBox.Controls.Add(this.resistPrinterComboBox);
+            this.configGroupBox.Controls.Add(this.resistFormatLinkLabel);
+            this.configGroupBox.Controls.Add(this.resistFormatCheckBox);
             this.configGroupBox.Controls.Add(this.editWorkCenterXlsxButton);
             this.configGroupBox.Controls.Add(this.reloadWorkCenterXlsxButton);
             this.configGroupBox.Controls.Add(this.editOrderXlsxButton);
@@ -204,15 +224,54 @@
             this.configGroupBox.Margin = new System.Windows.Forms.Padding(10);
             this.configGroupBox.Name = "configGroupBox";
             this.configGroupBox.Padding = new System.Windows.Forms.Padding(5);
-            this.configGroupBox.Size = new System.Drawing.Size(626, 157);
+            this.configGroupBox.Size = new System.Drawing.Size(626, 184);
             this.configGroupBox.TabIndex = 0;
             this.configGroupBox.TabStop = false;
             this.configGroupBox.Text = "Konfiguracja";
             // 
+            // resistPrinterComboBox
+            // 
+            this.resistPrinterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.resistPrinterComboBox.FormattingEnabled = true;
+            this.resistPrinterComboBox.Location = new System.Drawing.Point(359, 103);
+            this.resistPrinterComboBox.Name = "resistPrinterComboBox";
+            this.resistPrinterComboBox.Size = new System.Drawing.Size(259, 24);
+            this.resistPrinterComboBox.TabIndex = 18;
+            this.resistPrinterComboBox.SelectedIndexChanged += new System.EventHandler(this.resistPrinterComboBox_SelectedIndexChanged);
+            // 
+            // resistFormatLinkLabel
+            // 
+            this.resistFormatLinkLabel.AutoEllipsis = true;
+            this.resistFormatLinkLabel.Enabled = false;
+            this.resistFormatLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.resistFormatLinkLabel.Location = new System.Drawing.Point(204, 105);
+            this.resistFormatLinkLabel.Name = "resistFormatLinkLabel";
+            this.resistFormatLinkLabel.Size = new System.Drawing.Size(149, 16);
+            this.resistFormatLinkLabel.TabIndex = 17;
+            this.resistFormatLinkLabel.TabStop = true;
+            this.resistFormatLinkLabel.Text = "ładowanie...";
+            this.resistFormatLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.resistFormatLinkLabel_LinkClicked);
+            this.resistFormatLinkLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.resistFormatLinkLabel_MouseClick);
+            // 
+            // resistFormatCheckBox
+            // 
+            this.resistFormatCheckBox.AllowDrop = true;
+            this.resistFormatCheckBox.Checked = global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default.PrintResist;
+            this.resistFormatCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default, "PrintResist", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.resistFormatCheckBox.Location = new System.Drawing.Point(8, 104);
+            this.resistFormatCheckBox.Name = "resistFormatCheckBox";
+            this.resistFormatCheckBox.Size = new System.Drawing.Size(211, 20);
+            this.resistFormatCheckBox.TabIndex = 16;
+            this.resistFormatCheckBox.Text = "Etykieta wodo/UV odporna:";
+            this.resistFormatCheckBox.UseVisualStyleBackColor = true;
+            this.resistFormatCheckBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.formatCheckBox_DragDrop);
+            this.resistFormatCheckBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.formatCheckBox_DragEnter);
+            this.resistFormatCheckBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.formatCheckBox_MouseDown);
+            // 
             // editWorkCenterXlsxButton
             // 
             this.editWorkCenterXlsxButton.Enabled = false;
-            this.editWorkCenterXlsxButton.Location = new System.Drawing.Point(489, 125);
+            this.editWorkCenterXlsxButton.Location = new System.Drawing.Point(489, 153);
             this.editWorkCenterXlsxButton.Name = "editWorkCenterXlsxButton";
             this.editWorkCenterXlsxButton.Size = new System.Drawing.Size(130, 23);
             this.editWorkCenterXlsxButton.TabIndex = 15;
@@ -223,7 +282,7 @@
             // reloadWorkCenterXlsxButton
             // 
             this.reloadWorkCenterXlsxButton.Enabled = false;
-            this.reloadWorkCenterXlsxButton.Location = new System.Drawing.Point(358, 125);
+            this.reloadWorkCenterXlsxButton.Location = new System.Drawing.Point(358, 153);
             this.reloadWorkCenterXlsxButton.Name = "reloadWorkCenterXlsxButton";
             this.reloadWorkCenterXlsxButton.Size = new System.Drawing.Size(130, 23);
             this.reloadWorkCenterXlsxButton.TabIndex = 14;
@@ -234,7 +293,7 @@
             // editOrderXlsxButton
             // 
             this.editOrderXlsxButton.Enabled = false;
-            this.editOrderXlsxButton.Location = new System.Drawing.Point(489, 101);
+            this.editOrderXlsxButton.Location = new System.Drawing.Point(489, 129);
             this.editOrderXlsxButton.Name = "editOrderXlsxButton";
             this.editOrderXlsxButton.Size = new System.Drawing.Size(130, 23);
             this.editOrderXlsxButton.TabIndex = 13;
@@ -245,7 +304,7 @@
             // reloadOrderXlsxButton
             // 
             this.reloadOrderXlsxButton.Enabled = false;
-            this.reloadOrderXlsxButton.Location = new System.Drawing.Point(358, 101);
+            this.reloadOrderXlsxButton.Location = new System.Drawing.Point(358, 129);
             this.reloadOrderXlsxButton.Name = "reloadOrderXlsxButton";
             this.reloadOrderXlsxButton.Size = new System.Drawing.Size(130, 23);
             this.reloadOrderXlsxButton.TabIndex = 12;
@@ -257,7 +316,7 @@
             // 
             this.serviceTagPrinterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.serviceTagPrinterComboBox.FormattingEnabled = true;
-            this.serviceTagPrinterComboBox.Location = new System.Drawing.Point(359, 75);
+            this.serviceTagPrinterComboBox.Location = new System.Drawing.Point(359, 76);
             this.serviceTagPrinterComboBox.Name = "serviceTagPrinterComboBox";
             this.serviceTagPrinterComboBox.Size = new System.Drawing.Size(259, 24);
             this.serviceTagPrinterComboBox.TabIndex = 9;
@@ -267,7 +326,7 @@
             // 
             this.programPrinterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.programPrinterComboBox.FormattingEnabled = true;
-            this.programPrinterComboBox.Location = new System.Drawing.Point(359, 48);
+            this.programPrinterComboBox.Location = new System.Drawing.Point(359, 49);
             this.programPrinterComboBox.Name = "programPrinterComboBox";
             this.programPrinterComboBox.Size = new System.Drawing.Size(259, 24);
             this.programPrinterComboBox.TabIndex = 6;
@@ -288,7 +347,7 @@
             this.workCenterXlsxLinkLabel.AutoEllipsis = true;
             this.workCenterXlsxLinkLabel.Enabled = false;
             this.workCenterXlsxLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.workCenterXlsxLinkLabel.Location = new System.Drawing.Point(204, 129);
+            this.workCenterXlsxLinkLabel.Location = new System.Drawing.Point(204, 157);
             this.workCenterXlsxLinkLabel.Name = "workCenterXlsxLinkLabel";
             this.workCenterXlsxLinkLabel.Size = new System.Drawing.Size(149, 16);
             this.workCenterXlsxLinkLabel.TabIndex = 11;
@@ -302,7 +361,7 @@
             this.orderXlsxLinkLabel.AutoEllipsis = true;
             this.orderXlsxLinkLabel.Enabled = false;
             this.orderXlsxLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.orderXlsxLinkLabel.Location = new System.Drawing.Point(204, 103);
+            this.orderXlsxLinkLabel.Location = new System.Drawing.Point(204, 131);
             this.orderXlsxLinkLabel.Name = "orderXlsxLinkLabel";
             this.orderXlsxLinkLabel.Size = new System.Drawing.Size(149, 16);
             this.orderXlsxLinkLabel.TabIndex = 10;
@@ -316,7 +375,7 @@
             this.serviceTagFormatLinkLabel.AutoEllipsis = true;
             this.serviceTagFormatLinkLabel.Enabled = false;
             this.serviceTagFormatLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.serviceTagFormatLinkLabel.Location = new System.Drawing.Point(204, 77);
+            this.serviceTagFormatLinkLabel.Location = new System.Drawing.Point(204, 78);
             this.serviceTagFormatLinkLabel.Name = "serviceTagFormatLinkLabel";
             this.serviceTagFormatLinkLabel.Size = new System.Drawing.Size(149, 16);
             this.serviceTagFormatLinkLabel.TabIndex = 8;
@@ -330,7 +389,7 @@
             this.serviceTagFormatCheckBox.AllowDrop = true;
             this.serviceTagFormatCheckBox.Checked = global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default.PrintServiceTag;
             this.serviceTagFormatCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default, "PrintServiceTag", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.serviceTagFormatCheckBox.Location = new System.Drawing.Point(8, 76);
+            this.serviceTagFormatCheckBox.Location = new System.Drawing.Point(8, 77);
             this.serviceTagFormatCheckBox.Name = "serviceTagFormatCheckBox";
             this.serviceTagFormatCheckBox.Size = new System.Drawing.Size(211, 20);
             this.serviceTagFormatCheckBox.TabIndex = 7;
@@ -345,7 +404,7 @@
             this.programFormatLinkLabel.AutoEllipsis = true;
             this.programFormatLinkLabel.Enabled = false;
             this.programFormatLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.programFormatLinkLabel.Location = new System.Drawing.Point(204, 51);
+            this.programFormatLinkLabel.Location = new System.Drawing.Point(204, 52);
             this.programFormatLinkLabel.Name = "programFormatLinkLabel";
             this.programFormatLinkLabel.Size = new System.Drawing.Size(149, 16);
             this.programFormatLinkLabel.TabIndex = 5;
@@ -359,7 +418,7 @@
             this.programFormatCheckBox.AllowDrop = true;
             this.programFormatCheckBox.Checked = global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default.PrintProgram;
             this.programFormatCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::MSYS.Xiconf.LabelPrinter.Properties.Settings.Default, "PrintProgram", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.programFormatCheckBox.Location = new System.Drawing.Point(8, 50);
+            this.programFormatCheckBox.Location = new System.Drawing.Point(8, 51);
             this.programFormatCheckBox.Name = "programFormatCheckBox";
             this.programFormatCheckBox.Size = new System.Drawing.Size(211, 20);
             this.programFormatCheckBox.TabIndex = 4;
@@ -408,19 +467,6 @@
             this.printButton.UseVisualStyleBackColor = true;
             this.printButton.Click += new System.EventHandler(this.printButton_Click);
             // 
-            // orderNoTextBox
-            // 
-            this.orderNoTextBox.Font = new System.Drawing.Font("Consolas", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.orderNoTextBox.Location = new System.Drawing.Point(6, 8);
-            this.orderNoTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.orderNoTextBox.MaxLength = 9;
-            this.orderNoTextBox.Name = "orderNoTextBox";
-            this.orderNoTextBox.Size = new System.Drawing.Size(604, 82);
-            this.orderNoTextBox.TabIndex = 101;
-            this.orderNoTextBox.Text = "123456789";
-            this.orderNoTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.orderNoTextBox.Enter += new System.EventHandler(this.textBox_Enter);
-            // 
             // licenseErrorLabel
             // 
             this.licenseErrorLabel.BackColor = System.Drawing.Color.Red;
@@ -455,21 +501,25 @@
             this.printTabControl.Controls.Add(this.reprintOrderTabPage);
             this.printTabControl.Controls.Add(this.reprintProgramTabPage);
             this.printTabControl.Controls.Add(this.reprintServiceTagTabPage);
-            this.printTabControl.Location = new System.Drawing.Point(9, 202);
+            this.printTabControl.Controls.Add(this.reprintResistTabPage);
+            this.printTabControl.Location = new System.Drawing.Point(9, 225);
             this.printTabControl.Name = "printTabControl";
             this.printTabControl.SelectedIndex = 0;
-            this.printTabControl.Size = new System.Drawing.Size(626, 212);
+            this.printTabControl.Size = new System.Drawing.Size(626, 214);
             this.printTabControl.TabIndex = 11;
             this.printTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.printTabControl_Selected);
             // 
             // printTabPage
             // 
-            this.printTabPage.Controls.Add(this.printButton);
+            this.printTabPage.Controls.Add(this.orderExtraValue);
+            this.printTabPage.Controls.Add(this.orderExtraLabel);
+            this.printTabPage.Controls.Add(this.orderNoLabel);
             this.printTabPage.Controls.Add(this.orderNoTextBox);
+            this.printTabPage.Controls.Add(this.printButton);
             this.printTabPage.Location = new System.Drawing.Point(4, 22);
             this.printTabPage.Name = "printTabPage";
             this.printTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.printTabPage.Size = new System.Drawing.Size(618, 186);
+            this.printTabPage.Size = new System.Drawing.Size(618, 188);
             this.printTabPage.TabIndex = 0;
             this.printTabPage.Text = "Drukowanie etykiet";
             this.printTabPage.UseVisualStyleBackColor = true;
@@ -486,7 +536,7 @@
             this.reprintOrderTabPage.Location = new System.Drawing.Point(4, 22);
             this.reprintOrderTabPage.Name = "reprintOrderTabPage";
             this.reprintOrderTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.reprintOrderTabPage.Size = new System.Drawing.Size(618, 186);
+            this.reprintOrderTabPage.Size = new System.Drawing.Size(618, 188);
             this.reprintOrderTabPage.TabIndex = 1;
             this.reprintOrderTabPage.Text = "Dodruk zlecenia";
             this.reprintOrderTabPage.UseVisualStyleBackColor = true;
@@ -596,7 +646,7 @@
             this.reprintProgramTabPage.Location = new System.Drawing.Point(4, 22);
             this.reprintProgramTabPage.Name = "reprintProgramTabPage";
             this.reprintProgramTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.reprintProgramTabPage.Size = new System.Drawing.Size(618, 186);
+            this.reprintProgramTabPage.Size = new System.Drawing.Size(618, 188);
             this.reprintProgramTabPage.TabIndex = 2;
             this.reprintProgramTabPage.Text = "Dodruk programowej";
             this.reprintProgramTabPage.UseVisualStyleBackColor = true;
@@ -720,7 +770,7 @@
             this.reprintServiceTagTabPage.Location = new System.Drawing.Point(4, 22);
             this.reprintServiceTagTabPage.Name = "reprintServiceTagTabPage";
             this.reprintServiceTagTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.reprintServiceTagTabPage.Size = new System.Drawing.Size(618, 186);
+            this.reprintServiceTagTabPage.Size = new System.Drawing.Size(618, 188);
             this.reprintServiceTagTabPage.TabIndex = 3;
             this.reprintServiceTagTabPage.Text = "Dodruk Service Tag Driver";
             this.reprintServiceTagTabPage.UseVisualStyleBackColor = true;
@@ -826,12 +876,154 @@
             this.reprintServiceTagCountLabel.TabIndex = 0;
             this.reprintServiceTagCountLabel.Text = "Ilość etykiet:";
             // 
+            // reprintResistTabPage
+            // 
+            this.reprintResistTabPage.Controls.Add(this.reprintResistNoLabel);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistNoValue);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistTextValue);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistTextLabel);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistButton);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistCountValue);
+            this.reprintResistTabPage.Controls.Add(this.reprintResistCountLabel);
+            this.reprintResistTabPage.Location = new System.Drawing.Point(4, 22);
+            this.reprintResistTabPage.Name = "reprintResistTabPage";
+            this.reprintResistTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.reprintResistTabPage.Size = new System.Drawing.Size(618, 188);
+            this.reprintResistTabPage.TabIndex = 4;
+            this.reprintResistTabPage.Text = "Dodruk wodo/UV odpornej";
+            this.reprintResistTabPage.UseVisualStyleBackColor = true;
+            // 
+            // reprintResistNoLabel
+            // 
+            this.reprintResistNoLabel.AutoSize = true;
+            this.reprintResistNoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistNoLabel.Location = new System.Drawing.Point(3, 50);
+            this.reprintResistNoLabel.Name = "reprintResistNoLabel";
+            this.reprintResistNoLabel.Size = new System.Drawing.Size(78, 16);
+            this.reprintResistNoLabel.TabIndex = 106;
+            this.reprintResistNoLabel.Text = "Nr zlecenia:";
+            // 
+            // reprintResistNoValue
+            // 
+            this.reprintResistNoValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistNoValue.Location = new System.Drawing.Point(6, 70);
+            this.reprintResistNoValue.Mask = "000000000";
+            this.reprintResistNoValue.Name = "reprintResistNoValue";
+            this.reprintResistNoValue.Size = new System.Drawing.Size(100, 22);
+            this.reprintResistNoValue.TabIndex = 110;
+            // 
+            // reprintResistTextValue
+            // 
+            this.reprintResistTextValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistTextValue.Location = new System.Drawing.Point(119, 70);
+            this.reprintResistTextValue.Name = "reprintResistTextValue";
+            this.reprintResistTextValue.Size = new System.Drawing.Size(100, 22);
+            this.reprintResistTextValue.TabIndex = 111;
+            // 
+            // reprintResistTextLabel
+            // 
+            this.reprintResistTextLabel.AutoSize = true;
+            this.reprintResistTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistTextLabel.Location = new System.Drawing.Point(116, 50);
+            this.reprintResistTextLabel.Name = "reprintResistTextLabel";
+            this.reprintResistTextLabel.Size = new System.Drawing.Size(45, 16);
+            this.reprintResistTextLabel.TabIndex = 107;
+            this.reprintResistTextLabel.Text = "Tekst:";
+            // 
+            // reprintResistButton
+            // 
+            this.reprintResistButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistButton.Location = new System.Drawing.Point(5, 98);
+            this.reprintResistButton.Name = "reprintResistButton";
+            this.reprintResistButton.Size = new System.Drawing.Size(606, 82);
+            this.reprintResistButton.TabIndex = 112;
+            this.reprintResistButton.Text = "DRUKUJ ETYKIETY\r\nWODO/UV ODPORNE";
+            this.reprintResistButton.UseVisualStyleBackColor = true;
+            this.reprintResistButton.Click += new System.EventHandler(this.reprintResistButton_Click);
+            // 
+            // reprintResistCountValue
+            // 
+            this.reprintResistCountValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistCountValue.Location = new System.Drawing.Point(6, 25);
+            this.reprintResistCountValue.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.reprintResistCountValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.reprintResistCountValue.Name = "reprintResistCountValue";
+            this.reprintResistCountValue.Size = new System.Drawing.Size(100, 22);
+            this.reprintResistCountValue.TabIndex = 109;
+            this.reprintResistCountValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.reprintResistCountValue.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // reprintResistCountLabel
+            // 
+            this.reprintResistCountLabel.AutoSize = true;
+            this.reprintResistCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.reprintResistCountLabel.Location = new System.Drawing.Point(3, 5);
+            this.reprintResistCountLabel.Name = "reprintResistCountLabel";
+            this.reprintResistCountLabel.Size = new System.Drawing.Size(81, 16);
+            this.reprintResistCountLabel.TabIndex = 108;
+            this.reprintResistCountLabel.Text = "Ilość etykiet:";
+            // 
+            // orderNoTextBox
+            // 
+            this.orderNoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.orderNoTextBox.Location = new System.Drawing.Point(6, 25);
+            this.orderNoTextBox.Mask = "000000000";
+            this.orderNoTextBox.Name = "orderNoTextBox";
+            this.orderNoTextBox.Size = new System.Drawing.Size(100, 22);
+            this.orderNoTextBox.TabIndex = 103;
+            // 
+            // orderNoLabel
+            // 
+            this.orderNoLabel.AutoSize = true;
+            this.orderNoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.orderNoLabel.Location = new System.Drawing.Point(3, 5);
+            this.orderNoLabel.Name = "orderNoLabel";
+            this.orderNoLabel.Size = new System.Drawing.Size(78, 16);
+            this.orderNoLabel.TabIndex = 104;
+            this.orderNoLabel.Text = "Nr zlecenia:";
+            // 
+            // orderExtraValue
+            // 
+            this.orderExtraValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.orderExtraValue.Location = new System.Drawing.Point(6, 70);
+            this.orderExtraValue.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.orderExtraValue.Name = "orderExtraValue";
+            this.orderExtraValue.Size = new System.Drawing.Size(100, 22);
+            this.orderExtraValue.TabIndex = 106;
+            this.orderExtraValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // orderExtraLabel
+            // 
+            this.orderExtraLabel.AutoSize = true;
+            this.orderExtraLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.orderExtraLabel.Location = new System.Drawing.Point(3, 50);
+            this.orderExtraLabel.Name = "orderExtraLabel";
+            this.orderExtraLabel.Size = new System.Drawing.Size(175, 16);
+            this.orderExtraLabel.TabIndex = 105;
+            this.orderExtraLabel.Text = "Dodatkowa ilość w zleceniu:";
+            // 
             // MainForm
             // 
             this.AcceptButton = this.printButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 423);
+            this.ClientSize = new System.Drawing.Size(644, 445);
             this.Controls.Add(this.printTabControl);
             this.Controls.Add(this.licenseErrorLabel);
             this.Controls.Add(this.configGroupBox);
@@ -867,6 +1059,10 @@
             this.reprintServiceTagTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reprintServiceTagStartNoValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reprintServiceTagCountValue)).EndInit();
+            this.reprintResistTabPage.ResumeLayout(false);
+            this.reprintResistTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.reprintResistCountValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderExtraValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -889,7 +1085,6 @@
         private System.Windows.Forms.LinkLabel workCenterXlsxLinkLabel;
         private System.Windows.Forms.LinkLabel orderXlsxLinkLabel;
         private System.Windows.Forms.Button printButton;
-        private System.Windows.Forms.TextBox orderNoTextBox;
         private System.Windows.Forms.ToolStripMenuItem licenseMenuItem;
         private System.Windows.Forms.Label orderXlsxLabel;
         private System.Windows.Forms.Label workCenterXlsxLabel;
@@ -932,6 +1127,21 @@
         private System.Windows.Forms.Button reloadOrderXlsxButton;
         private System.Windows.Forms.Label reprintProgramNoLabel;
         private System.Windows.Forms.MaskedTextBox reprintProgramNoValue;
+        private System.Windows.Forms.ComboBox resistPrinterComboBox;
+        private System.Windows.Forms.LinkLabel resistFormatLinkLabel;
+        private System.Windows.Forms.CheckBox resistFormatCheckBox;
+        private System.Windows.Forms.TabPage reprintResistTabPage;
+        private System.Windows.Forms.Label reprintResistNoLabel;
+        private System.Windows.Forms.MaskedTextBox reprintResistNoValue;
+        private System.Windows.Forms.TextBox reprintResistTextValue;
+        private System.Windows.Forms.Label reprintResistTextLabel;
+        private System.Windows.Forms.Button reprintResistButton;
+        private System.Windows.Forms.NumericUpDown reprintResistCountValue;
+        private System.Windows.Forms.Label reprintResistCountLabel;
+        private System.Windows.Forms.NumericUpDown orderExtraValue;
+        private System.Windows.Forms.Label orderExtraLabel;
+        private System.Windows.Forms.Label orderNoLabel;
+        private System.Windows.Forms.MaskedTextBox orderNoTextBox;
     }
 }
 

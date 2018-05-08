@@ -16,6 +16,8 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private static Regex PROGRAM_NAME_REGEX = new Regex("^LABEL.*?PROGRAM(.*?)(?:\"|')?$", RegexOptions.IgnoreCase);
 
+        private static Regex RESIST_REGEX = new Regex(@"LABEL\s*ETO\s*50x30\s*\[(.*?)\]", RegexOptions.IgnoreCase);
+
         public DateTime Date { get; set; }
 
         public string No { get; set; }
@@ -27,6 +29,8 @@ namespace MSYS.Xiconf.LabelPrinter
         public int Quantity { get; set; }
 
         public string WorkCenter { get; set; }
+
+        public string ResistText { get; set; }
 
         public static Order FromExcelRange(ExcelRange excelRange, int row, OrderList.Columns columns)
         {
@@ -62,22 +66,34 @@ namespace MSYS.Xiconf.LabelPrinter
 
             var nc12 = nc12Matches.Groups[1].Value;
 
-            var programNameMatches = PROGRAM_NAME_REGEX.Match(excelRange[row, columns.ProgramName].Text.Trim());
+            var programName = excelRange[row, columns.ProgramName].Text.Trim();
+            var programNameMatches = PROGRAM_NAME_REGEX.Match(programName);
+            var resistText = "";
 
-            if (!programNameMatches.Success)
+            if (programNameMatches.Success)
             {
-                return null;
+                programName = "PROGRAM " + programNameMatches.Groups[1].Value.Trim();
+
+                if (programName.Contains("\""))
+                {
+                    programName = programName.Substring(0, programName.IndexOf('"'));
+                }
+                else if (programName.Contains("'"))
+                {
+                    programName = programName.Substring(0, programName.IndexOf('\''));
+                }
             }
-
-            var programName = "PROGRAM " + programNameMatches.Groups[1].Value.Trim();
-
-            if (programName.Contains("\""))
+            else
             {
-                programName = programName.Substring(0, programName.IndexOf('"'));
-            }
-            else if (programName.Contains("'"))
-            {
-                programName = programName.Substring(0, programName.IndexOf('\''));
+                var resistMatches = RESIST_REGEX.Match(programName);
+
+                if (!resistMatches.Success)
+                {
+                    return null;
+                }
+
+                resistText = resistMatches.Groups[1].Value.Trim();
+                programName = "";
             }
 
             var quantity = 0;
@@ -98,7 +114,8 @@ namespace MSYS.Xiconf.LabelPrinter
                 Nc12 = nc12,
                 ProgramName = programName,
                 Quantity = quantity,
-                WorkCenter = workCenter
+                WorkCenter = workCenter,
+                ResistText = resistText
             };
         }
     }

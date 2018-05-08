@@ -79,7 +79,7 @@ namespace MSYS.Xiconf.LabelPrinter
             {
                 Error = "NO_KEY";
             }
-            else if (Product != "XiconfLabelPrinter")
+            else if (Product != "XiconfLabelPrinter" && Product != "msys-xiconf-lp")
             {
                 Error = "APP_ID";
             }

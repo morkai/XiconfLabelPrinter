@@ -45,22 +45,28 @@ namespace MSYS.Xiconf.LabelPrinter
 
                 for (int row = 2, l = dimensions.End.Row; row <= l; ++row)
                 {
-                    var order = Order.FromExcelRange(worksheet.Cells, row, columns);
+                    var newOrder = Order.FromExcelRange(worksheet.Cells, row, columns);
 
-                    if (order == null)
+                    if (newOrder == null)
                     {
                         continue;
                     }
 
-                    var key = order.No + order.Nc12;
+                    var key = newOrder.No + newOrder.Nc12;
 
                     if (!orderMap.ContainsKey(key))
                     {
-                        orderMap.Add(key, order);
+                        orderMap.Add(key, newOrder);
                     }
-                    else if (order.Date > orderMap[key].Date)
+                    else if (newOrder.Date > orderMap[key].Date)
                     {
-                        orderMap[key] = order;
+                        CopyTexts(orderMap[key], newOrder);
+
+                        orderMap[key] = newOrder;
+                    }
+                    else
+                    {
+                        CopyTexts(newOrder, orderMap[key]);
                     }
                 }
 
@@ -70,6 +76,19 @@ namespace MSYS.Xiconf.LabelPrinter
             if (Count == 0)
             {
                 throw new Exception("W wybranym arkuszu nie wykryto żadnych zleceń.");
+            }
+        }
+
+        private void CopyTexts(Order from, Order to)
+        {
+            if (string.IsNullOrEmpty(to.ProgramName) && !string.IsNullOrEmpty(from.ProgramName))
+            {
+                to.ProgramName = from.ProgramName;
+            }
+
+            if (string.IsNullOrEmpty(to.ResistText) && !string.IsNullOrEmpty(from.ResistText))
+            {
+                to.ResistText = from.ResistText;
             }
         }
 

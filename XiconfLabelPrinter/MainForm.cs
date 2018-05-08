@@ -27,6 +27,8 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private LabelFormatDocument serviceTagFormat = null;
 
+        private LabelFormatDocument resistFormat = null;
+
         private string openFormatFileType = null;
 
         private string openXlsxFileType = null;
@@ -69,6 +71,7 @@ namespace MSYS.Xiconf.LabelPrinter
                 SetUpOrderFormat();
                 SetUpProgramFormat();
                 SetUpServiceTagFormat();
+                SetUpResistFormat();
                 SetUpOrderXlsx();
                 SetUpWorkCenterXlsx();
                 SetUpPrinters();
@@ -128,6 +131,8 @@ namespace MSYS.Xiconf.LabelPrinter
                 programFormatCheckBox.Cursor = Cursors.SizeNS;
                 serviceTagFormatCheckBox.Font = new Font(serviceTagFormatCheckBox.Font.FontFamily, serviceTagFormatCheckBox.Font.Size, FontStyle.Italic);
                 serviceTagFormatCheckBox.Cursor = Cursors.SizeNS;
+                resistFormatCheckBox.Font = new Font(resistFormatCheckBox.Font.FontFamily, resistFormatCheckBox.Font.Size, FontStyle.Italic);
+                resistFormatCheckBox.Cursor = Cursors.SizeNS;
             }
         }
 
@@ -172,6 +177,11 @@ namespace MSYS.Xiconf.LabelPrinter
         private void serviceTagPrinterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             settings.ServiceTagPrinterName = serviceTagPrinterComboBox.SelectedItem as string;
+        }
+
+        private void resistPrinterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.ResistPrinterName = resistPrinterComboBox.SelectedItem as string;
         }
 
         private void openOrderFormatMenuItem_Click(object sender, EventArgs e)
@@ -231,6 +241,20 @@ namespace MSYS.Xiconf.LabelPrinter
             }
         }
 
+        private void resistFormatLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenResistFormatFileDialog();
+        }
+
+        private void resistFormatLinkLabel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                settings.ResistFormatFile = "";
+                SetUpResistFormat();
+            }
+        }
+
         private void openFormatFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             var timer = new Timer() { Interval = 1 };
@@ -258,6 +282,11 @@ namespace MSYS.Xiconf.LabelPrinter
                     case "serviceTag":
                         settings.ServiceTagFormatFile = formatFile;
                         SetUpServiceTagFormat();
+                        break;
+
+                    case "resist":
+                        settings.ResistFormatFile = formatFile;
+                        SetUpResistFormat();
                         break;
                 }
 
@@ -354,7 +383,13 @@ namespace MSYS.Xiconf.LabelPrinter
                 return;
             }
 
-            if (!orderFormatCheckBox.Checked && !programFormatCheckBox.Checked && !serviceTagFormatCheckBox.Checked)
+            if (resistFormatCheckBox.Checked && resistFormat == null)
+            {
+                ShowError("Nieprawidłowa konfiguracja", "Zaznaczono do druku etykietę Service Tag, ale nie wybrano szablonu.");
+                return;
+            }
+
+            if (!orderFormatCheckBox.Checked && !programFormatCheckBox.Checked && !serviceTagFormatCheckBox.Checked && !resistFormatCheckBox.Checked)
             {
                 ShowError("Nieprawidłowa konfiguracja", "Nie zaznaczono żadnej etykiety.");
                 return;
@@ -544,6 +579,49 @@ namespace MSYS.Xiconf.LabelPrinter
             ShowPrintForm(new List<IPrintJob>(1) { printJob });
         }
 
+        private void reprintResistButton_Click(object sender, EventArgs e)
+        {
+            if (resistFormat == null)
+            {
+                ShowError("Błąd konfiguracji", "Nie wybrano szablonu etykiety wodo/UV odpornej.");
+                resistFormatLinkLabel.Focus();
+                return;
+            }
+
+            var orderNo = reprintResistNoValue.Text;
+
+            if (orderNo.Length == 0)
+            {
+                ShowError("Nieprawidłowy nr zlecenia", "Nr zlecenia jest wymagany.");
+                reprintResistNoValue.Focus();
+                return;
+            }
+
+            var text = reprintResistTextValue.Text.Trim();
+
+            if (string.IsNullOrEmpty(text))
+            {
+                var order = orderList.Find(o => o.No == orderNo);
+
+                if (order == null || string.IsNullOrEmpty(order.ResistText))
+                {
+                    ShowError("Nieprawidłowy nr zlecenia", "Nie znaleziono tekstu dla podanego zlecenia.");
+                    reprintResistTextValue.Focus();
+                    return;
+                }
+
+                text = order.ResistText;
+            }
+
+            var printJob = new ResistPrintJob(orderNo, text)
+            {
+                LabelQuantity = (int)reprintResistCountValue.Value,
+                PrinterName = settings.ResistPrinterName
+            };
+
+            ShowPrintForm(new List<IPrintJob>(1) { printJob });
+        }
+
         private void reloadOrderXlsxButton_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(settings.OrderXlsxFile))
@@ -620,12 +698,12 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private void ReorderFormatControls()
         {
-            var checkBoxTop = new int[] { orderFormatCheckBox.Top, programFormatCheckBox.Top, serviceTagFormatCheckBox.Top };
-            var checkBoxTabIndex = new int[] { orderFormatCheckBox.TabIndex, programFormatCheckBox.TabIndex, serviceTagFormatCheckBox.TabIndex };
-            var linkLabelTop = new int[] { orderFormatLinkLabel.Top, programFormatLinkLabel.Top, serviceTagFormatLinkLabel.Top };
-            var linkLabelTabIndex = new int[] { orderFormatLinkLabel.TabIndex, programFormatLinkLabel.TabIndex, serviceTagFormatLinkLabel.TabIndex };
-            var comboBoxTop = new int[] { orderPrinterComboBox.Top, programPrinterComboBox.Top, serviceTagPrinterComboBox.Top };
-            var comboBoxTabIndex = new int[] { orderPrinterComboBox.TabIndex, programPrinterComboBox.TabIndex, serviceTagPrinterComboBox.TabIndex };
+            var checkBoxTop = new int[] { orderFormatCheckBox.Top, programFormatCheckBox.Top, serviceTagFormatCheckBox.Top, resistFormatCheckBox.Top };
+            var checkBoxTabIndex = new int[] { orderFormatCheckBox.TabIndex, programFormatCheckBox.TabIndex, serviceTagFormatCheckBox.TabIndex, resistFormatCheckBox.TabIndex };
+            var linkLabelTop = new int[] { orderFormatLinkLabel.Top, programFormatLinkLabel.Top, serviceTagFormatLinkLabel.Top, resistFormatLinkLabel.Top };
+            var linkLabelTabIndex = new int[] { orderFormatLinkLabel.TabIndex, programFormatLinkLabel.TabIndex, serviceTagFormatLinkLabel.TabIndex, resistFormatLinkLabel.TabIndex };
+            var comboBoxTop = new int[] { orderPrinterComboBox.Top, programPrinterComboBox.Top, serviceTagPrinterComboBox.Top, resistPrinterComboBox.Top };
+            var comboBoxTabIndex = new int[] { orderPrinterComboBox.TabIndex, programPrinterComboBox.TabIndex, serviceTagPrinterComboBox.TabIndex, resistPrinterComboBox.TabIndex };
 
             for (var i = 0; i < settings.LabelOrder.Count; ++i)
             {
@@ -658,6 +736,9 @@ namespace MSYS.Xiconf.LabelPrinter
                 case "serviceTag":
                     return new Control[] { serviceTagFormatCheckBox, serviceTagFormatLinkLabel, serviceTagPrinterComboBox };
 
+                case "resist":
+                    return new Control[] { resistFormatCheckBox, resistFormatLinkLabel, resistPrinterComboBox };
+
                 default:
                     return null;
             }
@@ -665,11 +746,12 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private void UpdateLabelOrder()
         {
-            var sortedFormatTypes = new SortedList<int, string>(3);
+            var sortedFormatTypes = new SortedList<int, string>(4);
 
             sortedFormatTypes.Add(orderFormatCheckBox.Top, GetFormatTypeFromCheckBoxName(orderFormatCheckBox));
             sortedFormatTypes.Add(programFormatCheckBox.Top, GetFormatTypeFromCheckBoxName(programFormatCheckBox));
             sortedFormatTypes.Add(serviceTagFormatCheckBox.Top, GetFormatTypeFromCheckBoxName(serviceTagFormatCheckBox));
+            sortedFormatTypes.Add(resistFormatCheckBox.Top, GetFormatTypeFromCheckBoxName(resistFormatCheckBox));
 
             settings.LabelOrder.Clear();
 
@@ -708,6 +790,8 @@ namespace MSYS.Xiconf.LabelPrinter
             programFormatCheckBox.Cursor = Cursors.Default;
             serviceTagFormatCheckBox.Font = new Font(serviceTagFormatCheckBox.Font.FontFamily, serviceTagFormatCheckBox.Font.Size);
             serviceTagFormatCheckBox.Cursor = Cursors.Default;
+            resistFormatCheckBox.Font = new Font(resistFormatCheckBox.Font.FontFamily, resistFormatCheckBox.Font.Size);
+            resistFormatCheckBox.Cursor = Cursors.Default;
         }
 
         private void ToggleLicenseError()
@@ -767,6 +851,7 @@ namespace MSYS.Xiconf.LabelPrinter
                 orderPrinterComboBox.Items.Add(printer.PrinterName);
                 programPrinterComboBox.Items.Add(printer.PrinterName);
                 serviceTagPrinterComboBox.Items.Add(printer.PrinterName);
+                resistPrinterComboBox.Items.Add(printer.PrinterName);
             }
 
             if (printers.Count > 0)
@@ -781,6 +866,10 @@ namespace MSYS.Xiconf.LabelPrinter
 
                 serviceTagPrinterComboBox.SelectedItem = printers.Any(printer => printer.PrinterName == settings.ServiceTagPrinterName)
                     ? settings.ServiceTagPrinterName
+                    : printers.Default.PrinterName;
+
+                resistPrinterComboBox.SelectedItem = printers.Any(printer => printer.PrinterName == settings.ResistPrinterName)
+                    ? settings.ResistPrinterName
                     : printers.Default.PrinterName;
             }
         }
@@ -870,6 +959,35 @@ namespace MSYS.Xiconf.LabelPrinter
 
             serviceTagFormatLinkLabel.Text = serviceTagFormat == null ? "wybierz..." : Path.GetFileNameWithoutExtension(settings.ServiceTagFormatFile);
             serviceTagFormatLinkLabel.Enabled = true;
+        }
+
+        private void SetUpResistFormat()
+        {
+            resistFormatLinkLabel.Enabled = false;
+            resistFormatLinkLabel.Text = "ładowanie...";
+
+            if (resistFormat != null)
+            {
+                resistFormat.Close(Seagull.BarTender.Print.SaveOptions.DoNotSaveChanges);
+                resistFormat = null;
+            }
+
+            if (!string.IsNullOrEmpty(settings.ResistFormatFile))
+            {
+                try
+                {
+                    resistFormat = engine.Documents.Open(settings.ResistFormatFile);
+                }
+                catch (Exception x)
+                {
+                    settings.ResistFormatFile = "";
+
+                    ShowError("Błąd otwierania etykiety wodo/UV odpornej", x.Message);
+                }
+            }
+
+            resistFormatLinkLabel.Text = resistFormat == null ? "wybierz..." : Path.GetFileNameWithoutExtension(settings.ResistFormatFile);
+            resistFormatLinkLabel.Enabled = true;
         }
 
         private void SetUpOrderXlsx()
@@ -972,6 +1090,13 @@ namespace MSYS.Xiconf.LabelPrinter
             openFormatFileDialog.ShowDialog(this);
         }
 
+        private void OpenResistFormatFileDialog()
+        {
+            openFormatFileType = "resist";
+            openFormatFileDialog.Title = "Wybierz szablon etykiety wodo/UV odpornej";
+            openFormatFileDialog.ShowDialog(this);
+        }
+
         private void OpenOrderXlsxFileDialog()
         {
             openXlsxFileType = "order";
@@ -991,7 +1116,8 @@ namespace MSYS.Xiconf.LabelPrinter
             var workCenter = workCenterList.Find(wc => wc.Id == order.WorkCenter);
             var minDivQuantity = workCenter == null ? 1 : workCenter.MinDivQuantity;
             var prodLineCount = workCenter == null ? 1 : workCenter.ProdLineCount;
-            var orderDivMinQuantity = order.Quantity / minDivQuantity;
+            var orderQuantity = (int)(order.Quantity + orderExtraValue.Value);
+            var orderDivMinQuantity = orderQuantity / minDivQuantity;
             int seriesQuantity;
             int lastSeriesQuantity;
             int seriesCount;
@@ -1005,8 +1131,8 @@ namespace MSYS.Xiconf.LabelPrinter
                 seriesQuantity = (int)Math.Floor((float)orderDivMinQuantity / prodLineCount * minDivQuantity);
             }
 
-            seriesCount = (int)Math.Ceiling((float)order.Quantity / seriesQuantity);
-            lastSeriesQuantity = order.Quantity % seriesQuantity;
+            seriesCount = (int)Math.Ceiling((float)orderQuantity / seriesQuantity);
+            lastSeriesQuantity = orderQuantity % seriesQuantity;
 
             var seriesQuantities = new List<int>(seriesCount);
 
@@ -1066,6 +1192,13 @@ namespace MSYS.Xiconf.LabelPrinter
                             CreateServiceTagPrintJobs(printJobs, order, seriesGroup, seriesNo, seriesQuantities, seriesIndex);
                         }
                         break;
+
+                    case "resist":
+                        if (resistFormatCheckBox.Checked)
+                        {
+                            CreateResistPrintJobs(printJobs, order, seriesGroup, seriesNo, seriesQuantities[seriesIndex]);
+                        }
+                        break;
                 }
             }
         }
@@ -1083,6 +1216,11 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private void CreateProgramPrintJobs(List<IPrintJob> printJobs, Order order, int seriesGroup, int seriesNo, int labelQuantity)
         {
+            if (string.IsNullOrEmpty(order.ProgramName))
+            {
+                return;
+            }
+
             printJobs.Add(new ProgramPrintJob(order.Nc12, order.ProgramName)
             {
                 PrinterName = settings.ProgramPrinterName,
@@ -1105,6 +1243,22 @@ namespace MSYS.Xiconf.LabelPrinter
             {
                 PrinterName = settings.ServiceTagPrinterName,
                 LabelQuantity = seriesQuantities[seriesIndex],
+                SeriesNo = series,
+                SeriesGroup = seriesGroup
+            });
+        }
+
+        private void CreateResistPrintJobs(List<IPrintJob> printJobs, Order order, int seriesGroup, int series, int labelQuantity)
+        {
+            if (string.IsNullOrEmpty(order.ResistText))
+            {
+                return;
+            }
+
+            printJobs.Add(new ResistPrintJob(order.No, order.ResistText)
+            {
+                PrinterName = settings.ResistPrinterName,
+                LabelQuantity = labelQuantity,
                 SeriesNo = series,
                 SeriesGroup = seriesGroup
             });

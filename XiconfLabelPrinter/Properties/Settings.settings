@@ -47,7 +47,17 @@
   &lt;string&gt;order&lt;/string&gt;
   &lt;string&gt;program&lt;/string&gt;
   &lt;string&gt;serviceTag&lt;/string&gt;
+  &lt;string&gt;resist&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="ResistPrinterName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PrintResist" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ResistFormatFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
