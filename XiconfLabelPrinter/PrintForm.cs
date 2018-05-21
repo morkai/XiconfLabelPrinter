@@ -34,7 +34,14 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private LabelFormatDocument serviceTagFormat;
 
-        public PrintForm(IList<IPrintJob> printJobs, Engine engine, LabelFormatDocument orderFormat, LabelFormatDocument programFormat, LabelFormatDocument serviceTagFormat)
+        private LabelFormatDocument resistFormat;
+
+        public PrintForm(IList<IPrintJob> printJobs,
+            Engine engine,
+            LabelFormatDocument orderFormat,
+            LabelFormatDocument programFormat, 
+            LabelFormatDocument serviceTagFormat,
+            LabelFormatDocument resistFormat)
         {
             InitializeComponent();
 
@@ -43,6 +50,7 @@ namespace MSYS.Xiconf.LabelPrinter
             this.orderFormat = orderFormat;
             this.programFormat = programFormat;
             this.serviceTagFormat = serviceTagFormat;
+            this.resistFormat = resistFormat;
 
             CreateSeriesGroups();
             CreatePrintJobItems();
@@ -195,7 +203,9 @@ namespace MSYS.Xiconf.LabelPrinter
             {
                 printJobListView.Items[currentPrintJob].BackColor = Color.Orange;
 
-                backgroundWorker.RunWorkerAsync(new PrintWorkerArguments(printJobs[currentPrintJob], engine, orderFormat, programFormat, serviceTagFormat));
+                backgroundWorker.RunWorkerAsync(new PrintWorkerArguments(
+                    printJobs[currentPrintJob], engine, orderFormat, programFormat, serviceTagFormat, resistFormat
+                ));
             }
             else if (IsLastPrintJob())
             {

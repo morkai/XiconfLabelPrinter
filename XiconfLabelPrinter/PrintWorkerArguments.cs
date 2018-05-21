@@ -14,6 +14,8 @@ namespace MSYS.Xiconf.LabelPrinter
 
         private LabelFormatDocument serviceTagFormat;
 
+        private LabelFormatDocument resistFormat;
+
         public IPrintJob PrintJob { get; private set; }
 
         public Engine Engine { get; private set; }
@@ -33,17 +35,26 @@ namespace MSYS.Xiconf.LabelPrinter
                     case "serviceTag":
                         return serviceTagFormat;
 
+                    case "resist":
+                        return resistFormat;
+
                     default:
                         return null;
                 }
             }
         }
 
-        public PrintWorkerArguments(IPrintJob printJob, Engine engine, LabelFormatDocument orderFormat, LabelFormatDocument programFormat, LabelFormatDocument serviceTagFormat)
+        public PrintWorkerArguments(IPrintJob printJob, 
+            Engine engine,
+            LabelFormatDocument orderFormat,
+            LabelFormatDocument programFormat,
+            LabelFormatDocument serviceTagFormat,
+            LabelFormatDocument resistFormat)
         {
             this.orderFormat = orderFormat;
             this.programFormat = programFormat;
             this.serviceTagFormat = serviceTagFormat;
+            this.resistFormat = resistFormat;
             PrintJob = printJob;
             Engine = engine;
         }

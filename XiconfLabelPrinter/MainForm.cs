@@ -828,7 +828,8 @@ namespace MSYS.Xiconf.LabelPrinter
                 engine,
                 orderFormat,
                 programFormat,
-                serviceTagFormat
+                serviceTagFormat,
+                resistFormat
             );
 
             printForm.ShowDialog(this);

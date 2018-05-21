@@ -57,7 +57,14 @@ namespace MSYS.Xiconf.LabelPrinter
                 return null;
             }
 
-            var nc12Matches = NC12_REGEX.Match(excelRange[row, columns.Nc12].Text.Trim());
+            var nc12Value = excelRange[row, columns.Nc12].Text.Trim();
+
+            if (string.IsNullOrEmpty(nc12Value))
+            {
+                nc12Value = "000000000000000";
+            }
+
+            var nc12Matches = NC12_REGEX.Match(nc12Value);
 
             if (!nc12Matches.Success)
             {
