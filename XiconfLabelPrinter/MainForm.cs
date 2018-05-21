@@ -385,7 +385,7 @@ namespace MSYS.Xiconf.LabelPrinter
 
             if (resistFormatCheckBox.Checked && resistFormat == null)
             {
-                ShowError("Nieprawidłowa konfiguracja", "Zaznaczono do druku etykietę Service Tag, ale nie wybrano szablonu.");
+                ShowError("Nieprawidłowa konfiguracja", "Zaznaczono do druku etykietę wodo/UV, ale nie wybrano szablonu.");
                 return;
             }
 
@@ -422,6 +422,12 @@ namespace MSYS.Xiconf.LabelPrinter
             for (var i = 0; i < orders.Count; ++i)
             {
                 CreatePrintJobs(printJobs, orders[i], i + 1);
+            }
+
+            if (printJobs.Count == 0)
+            {
+                ShowError("Brak etykiet", "Nie ma etykiet dla wybranej konfiguracji.");
+                return;
             }
 
             ShowPrintForm(printJobs);
